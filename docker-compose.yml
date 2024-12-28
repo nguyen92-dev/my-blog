@@ -1,0 +1,29 @@
+version: '3.9'
+
+networks:
+  my-blog:
+    driver: bridge
+
+services:
+  database:
+    container_name: blog_database
+    image: 'postgres:latest'
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: nguyen # The PostgreSQL user (useful to connect to the database)
+      POSTGRES_PASSWORD: nguyen # The PostgreSQL password (useful to connect to the database)
+      POSTGRES_DB: blog # The PostgreSQL default database (automatically created at first launch)
+    volumes:
+      - ./environment/db-data/:/var/lib/postgresql/data/
+    networks:
+      - my-blog
+  cache:
+    container_name: blog_cache
+    image: 'redis:7.4.1-alpine'
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - my-blog
