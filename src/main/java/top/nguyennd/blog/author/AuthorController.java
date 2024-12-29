@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.nguyennd.blog.author.dto.AuthorMapper;
@@ -13,7 +12,7 @@ import top.nguyennd.blog.author.dto.AuthorResponse;
 
 import java.util.UUID;
 
-import static java.util.Objects.nonNull;
+import static java.util.Objects.isNull;
 
 @RestController
 @RequestMapping("/author")
@@ -36,7 +35,11 @@ public class AuthorController implements AuthorContract {
 
   @Override
   public ResponseEntity<AuthorResponse> getAuthor(UUID uuid) {
-    Author author = authorService.findById(uuid).orElse(null);
+    Author author = authorService.getFromRedis(uuid);
+    if (isNull(author)) {
+      System.out.println("query to db");
+      author = authorService.findInDbAndSetCache(uuid);
+    }
     return ResponseEntity.status(HttpStatus.OK).body(authorMapper.toResponseDto(author));
   }
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 public class AuthorResponse extends AuthorRequest {
 
   @JsonProperty
-  UUID uuid;
+  UUID id;
 
   @JsonProperty
   ZonedDateTime createdAt;

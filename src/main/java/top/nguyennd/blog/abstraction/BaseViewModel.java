@@ -1,4 +1,9 @@
 package top.nguyennd.blog.abstraction;
 
-public abstract class BaseViewModel {
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@NoArgsConstructor
+public class BaseViewModel implements Serializable {
 }

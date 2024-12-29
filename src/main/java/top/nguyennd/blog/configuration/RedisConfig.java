@@ -6,18 +6,21 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
+import java.util.UUID;
+
 @Configuration
 public class RedisConfig {
   @Bean
-  public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory factory) {
-    RedisTemplate<Object, Object> template = new RedisTemplate<>();
+  public RedisTemplate<UUID, Object> redisTemplate(RedisConnectionFactory factory) {
+    RedisTemplate<UUID, Object> template = new RedisTemplate<>();
     template.setConnectionFactory(factory);
-    Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
+    Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+    Jackson2JsonRedisSerializer<UUID> keySerializer = new Jackson2JsonRedisSerializer<>(UUID.class);
 
-    template.setKeySerializer(serializer);
+    template.setKeySerializer(keySerializer);
     template.setValueSerializer(serializer);
 
-    template.setHashKeySerializer(serializer);
+    template.setHashKeySerializer(keySerializer);
     template.setHashValueSerializer(serializer);
     return template;
   }

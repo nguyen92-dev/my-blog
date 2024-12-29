@@ -10,7 +10,7 @@ import top.nguyennd.blog.author.Author;
 @MapperConfig(unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AuthorMapper {
 
-  @Mapping(target = "uuid", ignore = true)
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "lastModifiedDate", ignore = true)
   Author toEntity(AuthorRequest requestDto);
