@@ -1,11 +1,14 @@
 package top.nguyennd.blog.abstraction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import top.nguyennd.blog.abstraction.exception.NotFoundException;
+import top.nguyennd.blog.author.Author;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -13,10 +16,12 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractBaseService<V extends BaseEntity> {
   private final BaseRepository<V> repository;
   private final RedisTemplate<UUID, Object> redisTemplate;
+  private final ObjectMapper mapper;
 
-  public AbstractBaseService(BaseRepository<V> repository, RedisTemplate<UUID, Object> redisTemplate) {
+  public AbstractBaseService(BaseRepository<V> repository, RedisTemplate<UUID, Object> redisTemplate, ObjectMapper mapper) {
     this.repository = repository;
     this.redisTemplate = redisTemplate;
+    this.mapper = mapper;
   }
 
   @Transactional
@@ -37,7 +42,6 @@ public abstract class AbstractBaseService<V extends BaseEntity> {
   public abstract Class<V> getEntityClass();
 
   public V getFromRedis(UUID uuid) {
-    ObjectMapper mapper = new ObjectMapper();
     if (!redisTemplate.hasKey(uuid)) {
       return null;
     }

@@ -11,8 +11,8 @@ import top.nguyennd.blog.author.Author;
 public interface AuthorMapper {
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "createdDate", ignore = true)
-  @Mapping(target = "lastModifiedDate", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "lastModifiedAt", ignore = true)
   Author toEntity(AuthorRequest requestDto);
 
   AuthorResponse toResponseDto(Author author);

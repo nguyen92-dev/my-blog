@@ -1,5 +1,6 @@
 package top.nguyennd.blog.author;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,9 @@ public class AuthorService extends AbstractBaseService<Author> {
   RedisTemplate<UUID, Object> redisTemplate;
 
   public AuthorService(AuthorRepository authorRepository,
-                       RedisTemplate<UUID, Object> redisTemplate) {
-    super(authorRepository, redisTemplate);
+                       RedisTemplate<UUID, Object> redisTemplate,
+                       ObjectMapper objectMapper) {
+    super(authorRepository, redisTemplate, objectMapper);
     this.authorRepository = authorRepository;
     this.redisTemplate = redisTemplate;
   }
